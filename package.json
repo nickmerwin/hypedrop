@@ -4,7 +4,7 @@
   "dependencies": {
     "express": "",
     "underscore": "",
-    "coffee-script": "",
+    "coffee-script": "1.1.2",
     "phantom": "",
     "dropbox": ""
  }
