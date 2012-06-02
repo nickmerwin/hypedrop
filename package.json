@@ -1,0 +1,12 @@
+{
+  "name": "hypedrop",
+  "version": "0.0.1",
+  "dependencies": {
+    "express": "",
+    "underscore": "",
+    "coffee-script": "",
+    "phantom": "",
+    "dropbox": ""
+ }
+}
+
