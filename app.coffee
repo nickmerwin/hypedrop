@@ -16,7 +16,6 @@ request = require 'request'
 util  = require('util')
 fs = require('fs')
 _ = require 'underscore'
-buffertools = require('buffertools')
 
 m3uWriter = require('m3u').writer()
 
