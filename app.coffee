@@ -33,7 +33,7 @@ access_token =
 app.get '/auth', (req, res)->
   dboxApp.request_token (status, request_token)->
     req.session.request_token = request_token
-    res.redirect "https://www.dropbox.com/1/oauth/authorize?oauth_token=#{ request_token.oauth_token }&oauth_callback=#{domain}/token"
+    res.redirect "https://www.dropbox.com/1/oauth/authorize?oauth_token=#{ request_token.oauth_token }&oauth_callback=http://#{req.headers.host}/token"
 
 app.get '/token', (req, res)->
   dboxApp.access_token req.session.request_token, (status, access_token)->
