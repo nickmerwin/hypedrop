@@ -64,7 +64,7 @@ app.get '/download', (req, res)->
     opts = req.session.downloadParams
     req.session.downloadParams = null
   else
-    opts = req.params
+    opts = req.query
 
   nTracks = parseInt opts.nTracks
 
@@ -83,20 +83,23 @@ app.get '/download', (req, res)->
 
       path = "#{track.artist}-#{track.song}.mp3"
 
-      opts = 
-        url: "http://hypem.com/serve/play/#{track.id}/#{track.key}", 
-        encoding: null
-        headers: 
-          'Cookie': data.cookie
-          'User-Agent': data.agent
-          'Referer': 'http://hypem.com/popular'
+      dboxClient.metadata path, (status, meta)->
+        return if status == 200
 
-      request opts, (err, res, body)->
+        opts = 
+          url: "http://hypem.com/serve/play/#{track.id}/#{track.key}", 
+          encoding: null
+          headers: 
+            'Cookie': data.cookie
+            'User-Agent': data.agent
+            'Referer': 'http://hypem.com/popular'
 
-        console.log "putting: #{path}"
+        request opts, (err, res, body)->
 
-        dboxClient.put path, body, (status, meta)->
-          console.log meta
+          console.log "putting: #{path}"
+
+          dboxClient.put path, body, (status, meta)->
+            console.log meta
         
     res.send data.tracks
 
