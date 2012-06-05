@@ -1,0 +1,25 @@
+.container
+  .content
+    .page-header
+      h1 HypeDrop v.1
+        small Mp3 Delivery Service
+    .row
+      .span10
+        form.well(action='/download', method='get')
+          label Hypem URL
+          input.span3(type='text', placeholder='http://hypem.com/popular', name='hypemUrl')
+
+          .form-inline
+            input.span1(type='text', name='nTracks', placeholder='0')
+            label &nbsp; # to download (0 for all)
+
+          br
+          .form-inline
+            input.span1(type='text', name='nPages', placeholder='3')
+            label &nbsp; # pages
+
+          .form-actions
+            button.btn.btn-success.btn-large(type='submit') Do this!
+
+  footer
+    p &copy; yickster 2012

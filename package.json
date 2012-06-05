@@ -6,7 +6,10 @@
     "underscore": "",
     "coffee-script": "1.1.2",
     "request": "",
-    "dbox": ""
+    "dbox": "",
+    "jade": "",
+    "m3u": "",
+    "buffertools": ""
  },
   "engines": {
     "node": "0.6.x"

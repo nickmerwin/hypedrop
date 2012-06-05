@@ -3,7 +3,8 @@ page.settings.loadImages = false
 
 pages = 3
 
-url = 'http://hypem.com/popular/1'
+url = phantom.args[0]
+nPages = phantom.args[1]
 
 page.onConsoleMessage = (msg)->
     console.log msg
