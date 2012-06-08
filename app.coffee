@@ -2,14 +2,10 @@
 #
 # TODO:
 # * mutli pages
-# * specify username
-# * specify single track url
 # * triggered at interval
-# * check file existance
 # * folder structure:
-#   * /popular
-#   * /yicksterparty
 # * playlist bulider
+# * ajax submit w/ socket.io for progress
 
 exec  = require('child_process').exec
 request = require 'request'
@@ -50,6 +46,7 @@ app.get '/token', (req, res)->
     res.redirect '/download'
 
 # ===================================================================
+
 app.get '/', (req, res)->
   res.render 'index'
 
@@ -68,7 +65,7 @@ app.get '/download', (req, res)->
 
   nTracks = parseInt opts.nTracks
 
-  phantomCmd = "phantomjs getTracks.coffee #{opts.hypemUrl || 'http://hypem.com/popular'} #{opts.nPages}"
+  phantomCmd = "phantomjs getTracks.coffee #{opts.hypemUrl || 'http://hypem.com/popular'} #{opts.nPages} 2> /dev/null"
   console.log phantomCmd
   exec phantomCmd, (err, stdout, stderr)->
     data = JSON.parse stdout

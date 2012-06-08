@@ -7,8 +7,8 @@ pages = 3
 url = phantom.args[0]
 nPages = phantom.args[1]
 
-page.onConsoleMessage = (msg)->
-    console.log msg
+page.onConsoleMessage = (msg)-> null
+page.onError = (msg,trace)-> null
 
 page.open url, (status) ->
   if status isnt "success"
