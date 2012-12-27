@@ -16,7 +16,7 @@ page.open url, (status) ->
     phantom.exit()
   else
     checkLoadInt = setInterval ->
-      if tracks = page.evaluate(-> window.trackList[document.location.href])
+      if tracks = page.evaluate(-> jQuery(".play-ctrl").first().click(); window.playList['tracks'])
         clearInterval checkLoadInt
 
         cookie = page.evaluate -> document.cookie
