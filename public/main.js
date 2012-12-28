@@ -25,6 +25,9 @@
           $("#tracksTable tbody tr").not("#trackTmpl").remove();
           return this.data.tracks.forEach(__bind(function(track) {
             var row;
+            if (!track.type) {
+              return;
+            }
             row = $("<tr>").html(template(track));
             row.find("a").attr("href", "/save?path=" + track.path + "&cookie=" + this.data.cookie + "&agent=" + this.data.agent + "&filename=" + track.filename);
             track.row = row;

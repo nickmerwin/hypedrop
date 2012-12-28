@@ -29,6 +29,8 @@ window.Loader =
         $("#tracksTable tbody tr").not("#trackTmpl").remove()
 
         @data.tracks.forEach (track)=>
+          return unless track.type
+          
           row = $("<tr>").html template track
 
           row.find("a").attr "href",

@@ -32,13 +32,6 @@ app.use express.static publicDir
 
 app.set('view engine', 'jade')
 
-
-# nick@lemurheavy.com oauth:
-access_token = 
-  oauth_token_secret: 'qxnx9fflp0fq0ba'
-  oauth_token: 'bx2uct9jqwn7cq8'
-  uid: '1989285' 
-
 # ===================================================================
 
 app.get '/auth', (req, res)->
