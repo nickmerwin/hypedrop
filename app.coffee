@@ -71,7 +71,7 @@ app.get '/load-tracks', (req, res) ->
       res.send error: true
 
 app.get '/', (req, res)->
-  res.render 'index'
+  res.render 'index', info: req.flash("info")
 
 app.get '/save', (req, res)->
   opts = 
@@ -103,11 +103,8 @@ app.all '/download', (req, res)->
   dboxClient = dboxApp.createClient(req.session.access_token)
 
   tracks.forEach (track)->
-    console.log "checking existence of: #{track.filename}"
 
     dboxClient.metadata track.filename, (status, meta)->
-      console.log "returned: #{status}"
-      console.log meta
       return if status == 200 && !meta.is_deleted
 
       opts = 
@@ -119,12 +116,12 @@ app.all '/download', (req, res)->
           'Referer': 'http://hypem.com/popular'
 
       request opts, (err, reqRes, body)->
-
         console.log "putting: #{track.filename}"
 
         dboxClient.put track.filename, body, (status, meta)->
-          console.log meta
+          console.log "done! #{track.filename}"
       
+  req.flash "info", "Delivering #{tracks.length} track(s) to your dropbox!"
   res.redirect "/"
 
 # ===================================================================

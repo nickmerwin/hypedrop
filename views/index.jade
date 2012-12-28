@@ -5,6 +5,9 @@
         small Mp3 Delivery Service
     .row
       .span10
+        if info != ""
+          .alert.alert-success = info
+
         p
           .input-append
             input.span5#urlInput(type='text', placeholder='http://hypem.com/popular')

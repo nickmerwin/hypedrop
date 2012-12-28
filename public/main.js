@@ -13,6 +13,8 @@
           var template;
           this.data = data;
           if (this.data.error) {
+            this.enableForm();
+            $("#loadingBar").hide();
             alert(":-( try again in a minute!");
             return;
           }
