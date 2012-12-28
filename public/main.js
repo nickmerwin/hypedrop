@@ -12,11 +12,15 @@
         $.getJSON("/load-tracks?url=" + this.url, __bind(function(data) {
           var template;
           this.data = data;
+          if (this.data.error) {
+            alert(":-( try again in a minute!");
+            return;
+          }
           $("#tracks").show();
           $("#loadingBar").hide();
-          $("#urlInput").attr("disabled", null);
-          $("#loadTracksBtn").removeClass("disabled");
+          this.enableForm();
           template = _.template($("#trackTmpl").html());
+          $("#tracksTable tbody tr").not("#trackTmpl").remove();
           return this.data.tracks.forEach(__bind(function(track) {
             var row;
             row = $("<tr>").html(template(track));
@@ -45,6 +49,10 @@
           return $("#downloadForm").submit();
         }, this));
       }, this));
+    },
+    enableForm: function() {
+      $("#urlInput").attr("disabled", null);
+      return $("#loadTracksBtn").removeClass("disabled");
     }
   };
   $(function() {

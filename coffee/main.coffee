@@ -12,14 +12,21 @@ window.Loader =
 
       $.getJSON "/load-tracks?url=#{@url}", (@data)=>
 
+        if @data.error
+          @enableForm()
+          $("#loadingBar").hide()
+          alert ":-( try again in a minute!"
+          return
+
         $("#tracks").show()
 
         $("#loadingBar").hide()
 
-        $("#urlInput").attr "disabled", null
-        $("#loadTracksBtn").removeClass "disabled"
+        @enableForm()
 
         template = _.template $("#trackTmpl").html()
+
+        $("#tracksTable tbody tr").not("#trackTmpl").remove()
 
         @data.tracks.forEach (track)=>
           row = $("<tr>").html template track
@@ -42,5 +49,9 @@ window.Loader =
         $("#downloadCookie").val @data.cookie
         $("#trackAttrs").val JSON.stringify trackAttrs
         $("#downloadForm").submit()
+
+  enableForm: ->
+    $("#urlInput").attr "disabled", null
+    $("#loadTracksBtn").removeClass "disabled"
 
 $ -> Loader.init()

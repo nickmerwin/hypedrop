@@ -55,17 +55,20 @@ app.get '/token', (req, res)->
 # ===================================================================
 
 app.get '/load-tracks', (req, res) ->
-  phantomCmd = "phantomjs getTracks.coffee #{req.params.url || 'http://hypem.com/popular'} #{req.params.pages || 1} 2> /dev/null"
+  phantomCmd = "phantomjs getTracks.coffee #{req.query.url || 'http://hypem.com/popular'} #{req.params.pages || 1} 2> /dev/null"
   console.log phantomCmd
   exec phantomCmd, (err, stdout, stderr)->
-    data = JSON.parse stdout
-    data.tracks.forEach (track)->
-      track.path = "http://hypem.com/serve/play/#{track.id}/#{track.key}" 
-      track.title = "#{track.artist} - #{track.song}"
-      track.filename = "#{track.artist}-#{track.song}.mp3"
-      track.length = track.time
+    try
+      data = JSON.parse stdout
+      data.tracks.forEach (track)->
+        track.path = "http://hypem.com/serve/play/#{track.id}/#{track.key}" 
+        track.title = "#{track.artist} - #{track.song}"
+        track.filename = "#{track.artist}-#{track.song}.mp3"
+        track.length = track.time
 
-    res.send data
+      res.send data
+    catch e
+      res.send error: true
 
 app.get '/', (req, res)->
   res.render 'index'
