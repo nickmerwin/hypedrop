@@ -83,8 +83,10 @@ app.get '/save', (req, res)->
 # ================================================================
 
 app.all '/download', (req, res)->
-  unless req.session.access_token
+  if req.body?.tracks 
     req.session.downloadBody = req.body
+
+  unless req.session.access_token
     return res.redirect "/auth" 
 
   tracks = JSON.parse req.session.downloadBody.tracks
