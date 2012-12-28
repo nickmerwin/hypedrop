@@ -1,25 +1,51 @@
 .container
   .content
     .page-header
-      h1 HypeDrop v.1
+      h1 HypeDrop v.1.1
         small Mp3 Delivery Service
     .row
       .span10
-        form.well(action='/download', method='get')
-          label Hypem URL
-          input.span3(type='text', placeholder='http://hypem.com/popular', name='hypemUrl')
+        p
+          .input-append
+            input.span5#urlInput(type='text', placeholder='http://hypem.com/popular')
+            a.btn.btn-small#loadTracksBtn(href='javascript://') Load Tracks!
 
-          .form-inline
-            input.span1(type='text', name='nTracks', placeholder='0')
-            label &nbsp; # to download (0 for all)
+        br
 
-          br
-          .form-inline
-            input.span1(type='text', name='nPages', placeholder='3')
-            label &nbsp; # pages
+        #loadingBar(style="display:none")
+          | Loading...
+          .progress.progress-striped.active 
+            .bar(style="width:100%")
 
-          .form-actions
-            button.btn.btn-success.btn-large(type='submit') Do this!
+        br
 
+        #tracks(style="display:none")
+
+          table.table.table-striped#tracksTable
+            thead
+              tr
+                th
+                  input(type='checkbox')
+                th Track
+                th Length
+            tbody
+              tr#trackTmpl(style="display:none")
+                td
+                  input(type='checkbox')
+                td 
+                  a(href='#') {{title}}
+                td {{length}}
+
+          a.btn.btn-primary.btn-large#dropboxBtn(href='javascript://') 
+            i.icon-download-alt.icon-white
+            | &nbsp; Dropbox
+
+          form#downloadForm(action="/download", method="POST")
+            input#trackAttrs(type="hidden", name="tracks")
+            input#downloadCookie(type="hidden", name="cookie")
+            input#downloadAgent(type="hidden", name="agent")
+
+
+  br
   footer
     p &copy; yickster 2012

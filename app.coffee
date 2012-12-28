@@ -21,8 +21,15 @@ dboxApp = dbox.app({ "app_key": "lnfmadcothfb9ds", "app_secret": "xmv6otph4yr0is
 express = require('express')
 app = express.createServer()
 app.use(express.cookieParser())
+app.use(express.bodyParser())
 app.use(express.session({ secret: "asdfasdf" }))
-app.use(express.static(__dirname + '/public'));
+
+coffeeDir = __dirname + '/coffee'
+publicDir = __dirname + '/public'
+
+app.use express.compiler(src: coffeeDir, dest: publicDir, enable: ['coffeescript'])
+app.use express.static publicDir
+
 app.set('view engine', 'jade')
 
 
@@ -47,58 +54,75 @@ app.get '/token', (req, res)->
 
 # ===================================================================
 
-app.get '/', (req, res)->
-  res.render 'index'
-
-app.get '/download', (req, res)->
-  unless req.session.access_token
-    req.session.downloadParams = req.query
-    return res.redirect "/auth" 
-
-  dboxClient = dboxApp.createClient(req.session.access_token)
-
-  if req.session.downloadParams?
-    opts = req.session.downloadParams
-    req.session.downloadParams = null
-  else
-    opts = req.query
-
-  nTracks = parseInt opts.nTracks
-
-  phantomCmd = "phantomjs getTracks.coffee #{opts.hypemUrl || 'http://hypem.com/popular'} #{opts.nPages} 2> /dev/null"
+app.get '/load-tracks', (req, res) ->
+  phantomCmd = "phantomjs getTracks.coffee #{req.params.url || 'http://hypem.com/popular'} #{req.params.pages || 1} 2> /dev/null"
   console.log phantomCmd
   exec phantomCmd, (err, stdout, stderr)->
     data = JSON.parse stdout
+    data.tracks.forEach (track)->
+      track.path = "http://hypem.com/serve/play/#{track.id}/#{track.key}" 
+      track.title = "#{track.artist} - #{track.song}"
+      track.filename = "#{track.artist}-#{track.song}.mp3"
+      track.length = track.time
 
-    # init m3u 
-    # m3uWriter.comment "HypeDrop"
+    res.send data
 
-    tracks = if nTracks > 0 then data.tracks.slice(0, nTracks) else data.tracks
+app.get '/', (req, res)->
+  res.render 'index'
 
-    tracks.forEach (track)->
-      console.log "id: #{track.id}"
+app.get '/save', (req, res)->
+  opts = 
+    url: req.query.path 
+    encoding: null
+    headers: 
+      'Cookie': req.query.cookie
+      'User-Agent': req.query.agent
+      'Referer': 'http://hypem.com/popular'
 
-      path = "#{track.artist}-#{track.song}.mp3"
+  request opts, (err, reqRes, body)->
+    res.attachment req.query.filename
+    res.contentType "application/mp3"
+    res.end body, 'binary'
 
-      dboxClient.metadata path, (status, meta)->
-        return if status == 200
+# ================================================================
 
-        opts = 
-          url: "http://hypem.com/serve/play/#{track.id}/#{track.key}", 
-          encoding: null
-          headers: 
-            'Cookie': data.cookie
-            'User-Agent': data.agent
-            'Referer': 'http://hypem.com/popular'
+app.all '/download', (req, res)->
+  unless req.session.access_token
+    req.session.downloadBody = req.body
+    return res.redirect "/auth" 
 
-        request opts, (err, res, body)->
+  tracks = JSON.parse req.session.downloadBody.tracks
+  cookie = req.session.downloadBody.cookie
+  agent = req.session.downloadBody.agent
 
-          console.log "putting: #{path}"
+  req.session.downloadBody = null
 
-          dboxClient.put path, body, (status, meta)->
-            console.log meta
-        
-    res.send data.tracks
+  dboxClient = dboxApp.createClient(req.session.access_token)
+
+  tracks.forEach (track)->
+    console.log "checking existence of: #{track.filename}"
+
+    dboxClient.metadata track.filename, (status, meta)->
+      console.log "returned: #{status}"
+      console.log meta
+      return if status == 200 && !meta.is_deleted
+
+      opts = 
+        url: track.path, 
+        encoding: null
+        headers: 
+          'Cookie': cookie
+          'User-Agent': agent
+          'Referer': 'http://hypem.com/popular'
+
+      request opts, (err, reqRes, body)->
+
+        console.log "putting: #{track.filename}"
+
+        dboxClient.put track.filename, body, (status, meta)->
+          console.log meta
+      
+  res.redirect "/"
 
 # ===================================================================
 
