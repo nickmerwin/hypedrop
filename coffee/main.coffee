@@ -30,7 +30,7 @@ window.Loader =
 
         @data.tracks.forEach (track)=>
           return unless track.type
-          
+
           row = $("<tr>").html template track
 
           row.find("a").attr "href",
@@ -44,7 +44,7 @@ window.Loader =
         $("#tracksTable tbody input[type=checkbox]").attr "checked", @checked
 
       $("#dropboxBtn").click =>
-        tracks = _.select @data.tracks, (t)-> t.row.find("input[type=checkbox]").attr("checked")
+        tracks = _.select @data.tracks, (t)-> t.row?.find("input[type=checkbox]").attr("checked")
         trackAttrs = _.map tracks, (t)-> {filename: t.filename, path: t.path}
 
         $("#downloadAgent").val @data.agent
