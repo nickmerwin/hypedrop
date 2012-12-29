@@ -40,7 +40,8 @@
         return $("#dropboxBtn").click(__bind(function() {
           var trackAttrs, tracks;
           tracks = _.select(this.data.tracks, function(t) {
-            return t.row.find("input[type=checkbox]").attr("checked");
+            var _ref;
+            return (_ref = t.row) != null ? _ref.find("input[type=checkbox]").attr("checked") : void 0;
           });
           trackAttrs = _.map(tracks, function(t) {
             return {
