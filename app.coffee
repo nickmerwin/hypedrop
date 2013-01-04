@@ -16,7 +16,7 @@ _ = require 'underscore'
 m3uWriter = require('m3u').writer()
 
 dbox  = require("dbox")
-dboxApp = dbox.app({ "app_key": "lnfmadcothfb9ds", "app_secret": "xmv6otph4yr0ish" })
+dboxApp = dbox.app({ "app_key": process.env.HYPEDROP_DROPBOX_APP_KEY, "app_secret": process.env.HYPEDROP_DROPBOX_APP_SECRET })
 
 express = require('express')
 app = express.createServer()
