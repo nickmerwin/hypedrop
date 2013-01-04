@@ -48,7 +48,9 @@ app.get '/token', (req, res)->
 # ===================================================================
 
 app.get '/load-tracks', (req, res) ->
-  phantomCmd = "phantomjs getTracks.coffee #{req.query.url || 'http://hypem.com/popular'} #{req.params.pages || 1} 2> /dev/null"
+  url = (req.query.url || 'http://hypem.com/popular').replace /[ ]/g, "%20"
+
+  phantomCmd = "phantomjs getTracks.coffee '#{url}' #{req.params.pages || 1} 2> /dev/null"
   console.log phantomCmd
   exec phantomCmd, (err, stdout, stderr)->
     try
