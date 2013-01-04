@@ -1,6 +1,6 @@
 # HypeDrop!
 
-A phantomjs + dropbox + expressjs expirement
+A phantomjs + dropbox + expressjs experiment
 
 ## Notes:
 
