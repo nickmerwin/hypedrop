@@ -56,23 +56,24 @@ app.get '/load-tracks', (req, res) ->
     try
       data = JSON.parse stdout
       data.tracks.forEach (track)->
-        track.path = "http://hypem.com/serve/play/#{track.id}/#{track.key}" 
+        track.path = "http://hypem.com/serve/play/#{track.id}/#{track.key}"
         track.title = "#{track.artist} - #{track.song}"
         track.filename = "#{track.artist}-#{track.song}.mp3"
         track.length = track.time
 
       res.send data
     catch e
+      console.log stdout
       res.send error: true
 
 app.get '/', (req, res)->
   res.render 'index', info: req.flash("info")
 
 app.get '/save', (req, res)->
-  opts = 
-    url: req.query.path 
+  opts =
+    url: req.query.path
     encoding: null
-    headers: 
+    headers:
       'Cookie': req.query.cookie
       'User-Agent': req.query.agent
       'Referer': 'http://hypem.com/popular'
@@ -85,11 +86,11 @@ app.get '/save', (req, res)->
 # ================================================================
 
 app.all '/download', (req, res)->
-  if req.body?.tracks 
+  if req.body?.tracks
     req.session.downloadBody = req.body
 
   unless req.session.access_token
-    return res.redirect "/auth" 
+    return res.redirect "/auth"
 
   tracks = JSON.parse req.session.downloadBody.tracks
   cookie = req.session.downloadBody.cookie
@@ -104,10 +105,10 @@ app.all '/download', (req, res)->
     dboxClient.metadata track.filename, (status, meta)->
       return if status == 200 && !meta.is_deleted
 
-      opts = 
-        url: track.path, 
+      opts =
+        url: track.path,
         encoding: null
-        headers: 
+        headers:
           'Cookie': cookie
           'User-Agent': agent
           'Referer': 'http://hypem.com/popular'
@@ -117,7 +118,7 @@ app.all '/download', (req, res)->
 
         dboxClient.put track.filename, body, (status, meta)->
           console.log "done! #{track.filename}"
-      
+
   req.flash "info", "Delivering #{tracks.length} track(s) to your dropbox!"
   res.redirect "/"
 
