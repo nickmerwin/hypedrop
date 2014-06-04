@@ -63,6 +63,7 @@ app.get '/load-tracks', (req, res) ->
 
       res.send data
     catch e
+      console.log e.message
       console.log stdout
       res.send error: true
 
