@@ -1,14 +1,14 @@
 {
   "name": "hypedrop",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "dependencies": {
-    "express": "2.5.9",
-    "underscore": "",
+    "express": "2.x",
+    "underscore": "1.x",
     "coffee-script": "1.7.1",
     "request": "2.36.0",
     "dbox": "0.6.3",
     "jade": "1.3.1",
-    "m3u": ""
+    "m3u": "0.0.2"
  },
   "engines": {
     "node": "0.10.x",
