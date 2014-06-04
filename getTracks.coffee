@@ -18,7 +18,7 @@ page.open url, (status) ->
     page.evaluate -> jQuery(".play-ctrl").first().click()
 
     checkLoadInt = setInterval ->
-      if tracks = page.evaluate(-> window.playList['tracks'])
+      if tracks = page.evaluate(-> window.playList?['tracks'] )
         clearInterval checkLoadInt
 
         cookie = page.evaluate -> document.cookie
