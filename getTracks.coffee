@@ -15,8 +15,10 @@ page.open url, (status) ->
     console.log "Unable to access network"
     phantom.exit()
   else
+    page.evaluate -> jQuery(".play-ctrl").first().click()
+
     checkLoadInt = setInterval ->
-      if tracks = page.evaluate(-> jQuery(".play-ctrl").first().click(); window.playList['tracks'])
+      if tracks = page.evaluate(-> window.playList['tracks'])
         clearInterval checkLoadInt
 
         cookie = page.evaluate -> document.cookie
