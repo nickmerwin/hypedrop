@@ -15,7 +15,7 @@ page.open url, (status) ->
     console.log "Unable to access network"
     phantom.exit()
   else
-    page.evaluate -> jQuery(".play-ctrl").first().click()
+    page.evaluate -> jQuery(".play").first().click()
 
     checkLoadInt = setInterval ->
       getTracks = ->
