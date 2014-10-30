@@ -54,7 +54,7 @@ app.get '/load-tracks', (req, res) ->
   console.log phantomCmd
   exec phantomCmd, (err, stdout, stderr)->
     try
-      data = JSON.parse stdout
+      data = JSON.parse stdout.match(/\{.*\}/m)[0]
       data.tracks.forEach (track)->
         track.path = "http://hypem.com/serve/play/#{track.id}/#{track.key}"
         track.title = "#{track.artist} - #{track.song}"
