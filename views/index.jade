@@ -1,10 +1,7 @@
-a(href='https://github.com/nickmerwin/hypedrop')
-  img(style='position: absolute; top: 0; left: 0; border: 0;',src='https://s3.amazonaws.com/github/ribbons/forkme_left_darkblue_121621.png',alt='Fork me on GitHub')
-
 .container
   .content
     .page-header
-      h1 HypeDrop v.1.1
+      h1 HypeDrop v.1.2 &nbsp;
         small Mp3 Delivery Service
     .row
       .span10
@@ -20,7 +17,7 @@ a(href='https://github.com/nickmerwin/hypedrop')
 
         #loadingBar(style="display:none")
           | Loading...
-          .progress.progress-striped.active 
+          .progress.progress-striped.active
             .bar(style="width:100%")
 
         br
@@ -38,11 +35,11 @@ a(href='https://github.com/nickmerwin/hypedrop')
               tr#trackTmpl(style="display:none")
                 td
                   input(type='checkbox')
-                td 
+                td
                   a(href='#') {{title}}
                 td {{length}}
 
-          a.btn.btn-primary.btn-large#dropboxBtn(href='javascript://') 
+          a.btn.btn-primary.btn-large#dropboxBtn(href='javascript://')
             i.icon-download-alt.icon-white
             | &nbsp; Dropbox
 
@@ -54,4 +51,7 @@ a(href='https://github.com/nickmerwin/hypedrop')
 
   br
   footer
-    p &copy; yickster 2012
+    p
+      &copy; yickster 2012
+      &nbsp;
+      a(href='https://github.com/nickmerwin/hypedrop') code
